@@ -33,13 +33,25 @@ select name from second_country_row;
 -- Clue #4: We're booking the first flight out – maybe we've actually got a chance to catch her this time. There are only two cities she could be flying to in the country. One is named the same as the country – that would be too obvious. We're following our gut on this one; find out what other city in that country she might be flying to.
 
 -- Write SQL query here
+CREATE TEMP TABLE city_name AS
 SELECT cities.name FROM cities
 JOIN second_country_row ON cities.countrycode = second_country_row.code
 WHERE cities.name != second_country_row.name;
 
+SELECT name from city_name;
+
 -- Clue #5: Oh no, she pulled a switch – there are two cities with very similar names, but in totally different parts of the globe! She's headed to South America as we speak; go find a city whose name is like the one we were headed to, but doesn't end the same. Find out the city, and do another search for what country it's in. Hurry!
 
 -- Write SQL query here
+CREATE TEMP TABLE similar_city_row AS
+SELECT * FROM cities
+WHERE cities.name LIKE 'Serr%'
+LIMIT 1;
+
+SELECT name from similar_city_row;
+
+SELECT countries.name FROM countries
+JOIN similar_city_row ON similar_city_row.countrycode = countries.code;
 
 
 -- Clue #6: We're close! Our South American agent says she just got a taxi at the airport, and is headed towards
