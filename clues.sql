@@ -22,15 +22,20 @@ select language from country_language;
 -- Clue #3: We have new news on the classes Carmen attended – our gumshoes tell us she's moved on to a different country, a country where people speak only the language she was learning. Find out which nearby country speaks nothing but that language.
 
 -- Write SQL query here
-SELECT countries.name FROM countries
+CREATE TEMP TABLE second_country_row AS
+SELECT countries.name, countries.code FROM countries
 JOIN countrylanguages ON countries.code = countrylanguages.countrycode
 JOIN country_language ON country_language.language = countrylanguages.language
-WHERE countries.region = 'Southern Europe' AND percentage = 100;
+WHERE countries.region = 'Southern Europe' AND countrylanguages.percentage = 100;
+
+select name from second_country_row;
 
 -- Clue #4: We're booking the first flight out – maybe we've actually got a chance to catch her this time. There are only two cities she could be flying to in the country. One is named the same as the country – that would be too obvious. We're following our gut on this one; find out what other city in that country she might be flying to.
 
 -- Write SQL query here
-
+SELECT cities.name FROM cities
+JOIN second_country_row ON cities.countrycode = second_country_row.code
+WHERE cities.name != second_country_row.name;
 
 -- Clue #5: Oh no, she pulled a switch – there are two cities with very similar names, but in totally different parts of the globe! She's headed to South America as we speak; go find a city whose name is like the one we were headed to, but doesn't end the same. Find out the city, and do another search for what country it's in. Hurry!
 
