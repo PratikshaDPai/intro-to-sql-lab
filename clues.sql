@@ -12,14 +12,20 @@ SELECT name from country_row;
 -- Clue #2: Now that we're here, we have insight that Carmen was seen attending language classes in this country's officially recognized language. Check our databases and find out what language is spoken in this country, so we can call in a translator to work with you.
 
 -- Write SQL query here
+CREATE TEMP TABLE country_language AS
 SELECT language FROM countries
 JOIN countrylanguages ON countries.code = countrylanguages.countrycode
 JOIN country_row ON countries.code = country_row.code;
 
+select language from country_language;
+
 -- Clue #3: We have new news on the classes Carmen attended – our gumshoes tell us she's moved on to a different country, a country where people speak only the language she was learning. Find out which nearby country speaks nothing but that language.
 
 -- Write SQL query here
-
+SELECT countries.name FROM countries
+JOIN countrylanguages ON countries.code = countrylanguages.countrycode
+JOIN country_language ON country_language.language = countrylanguages.language
+WHERE countries.region = 'Southern Europe' AND percentage = 100;
 
 -- Clue #4: We're booking the first flight out – maybe we've actually got a chance to catch her this time. There are only two cities she could be flying to in the country. One is named the same as the country – that would be too obvious. We're following our gut on this one; find out what other city in that country she might be flying to.
 
